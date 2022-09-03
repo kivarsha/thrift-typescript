@@ -2,6 +2,7 @@ import * as ts from 'typescript'
 
 import {
     FieldDefinition,
+    Identifier,
     InterfaceWithFields,
 } from '@creditkarma/thrift-parser'
 
@@ -46,6 +47,22 @@ export function renderInterface(
         fields = fields.filter((field: FieldDefinition) => {
             return field.defaultValue == null
         })
+        if (state.options.functionFieldPromotion.isEnabled) {
+            var promoteField = fields.find((field: FieldDefinition) => {
+                return (field.fieldType as Identifier).value == state.options.functionFieldPromotion.typeName
+            })
+            if (promoteField) {
+                // cache properties for field we're promoting
+                state.options.functionFieldPromotion.fieldName = promoteField.name.value;
+                state.options.functionFieldPromotion.paramName = promoteField.name.value.charAt(0).toLowerCase() + promoteField.name.value.slice(1);
+                state.options.functionFieldPromotion.qualifiedTypeName = state.options.functionFieldPromotion.typeName + '.' + state.options.functionFieldPromotion.typeName;
+
+                // args should also exclude promotion fields
+                fields = fields.filter((field: FieldDefinition) => {
+                    return field != promoteField
+                })
+            }
+        }
     }
 
     const signatures = fields.map((field: FieldDefinition) => {
