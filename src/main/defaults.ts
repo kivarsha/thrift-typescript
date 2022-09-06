@@ -18,7 +18,7 @@ export const DEFAULT_OPTIONS: IMakeOptions = {
     withNameField: false,
     omitProtocolReaders: false,
     omitThriftLibImport: false,
-    functionFieldPromotion: {isEnabled: false} as IFunctionFieldPromote,
+    functionFieldPromotion: { isEnabled: false } as IFunctionFieldPromote,
     useInterfacesWithFunctions: false,
     useStringLiteralsForEnums: false,
 }
