@@ -1,4 +1,4 @@
-import { IMakeOptions } from './types'
+import { IFunctionFieldPromote, IMakeOptions } from './types'
 import { deepMerge } from './utils'
 
 export const DEFAULT_APACHE_LIB = 'thrift'
@@ -18,6 +18,7 @@ export const DEFAULT_OPTIONS: IMakeOptions = {
     withNameField: false,
     omitProtocolReaders: false,
     omitThriftLibImport: false,
+    functionFieldPromotion: {isEnabled: false} as IFunctionFieldPromote,
     useInterfacesWithFunctions: false,
     useStringLiteralsForEnums: false,
 }

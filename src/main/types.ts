@@ -165,11 +165,31 @@ export interface IMakeOptions {
     // Omit thrift library imports
     omitThriftLibImport: boolean
 
+    // promote a function field to a function parameter
+    functionFieldPromotion: IFunctionFieldPromote
+
     // replace classes with interfaces + functions
     useInterfacesWithFunctions: boolean
 
     // replace enum int values with string literals
     useStringLiteralsForEnums: boolean
+}
+
+export interface IFunctionFieldPromote {
+    // whether the option is enabled
+    isEnabled: boolean
+
+    // the name of the field in the interface functions
+    fieldName: string
+
+    // the name to give the parameter
+    paramName: string
+
+    // the name of the field type
+    typeName: string
+
+    // the qualified name of the field type (file.typeName)
+    qualifiedTypeName: string
 }
 
 export interface IThriftFiles {
