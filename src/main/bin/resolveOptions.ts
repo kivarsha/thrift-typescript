@@ -104,7 +104,7 @@ export function resolveOptions(args: Array<string>): IMakeOptions {
                 index += 1
                 break
 
-            case '--functionsFieldPromotion':
+            case '--functionFieldPromotion':
                 options.functionFieldPromotion.typeName = args[index + 1]
                 options.functionFieldPromotion.isEnabled = true
                 index += 2
