@@ -8,8 +8,8 @@ import {
 
 import { IRenderState } from '../../types'
 import { createArgsParameterForStruct } from './struct'
-import { renderValue } from './values'
 import { createFunctionParameter } from './utils'
+import { renderValue } from './values'
 
 export function functionNameForClass(statement: InterfaceWithFields): string {
     return `create${statement.name.value}`
@@ -31,15 +31,18 @@ function interfaceConstruction(
                                       field.defaultValue,
                                       state,
                                   )
-                                : ( state.options.functionFieldPromotion.isEnabled
-                                    && (field.fieldType as Identifier).value == state.options.functionFieldPromotion.typeName
-                                    ? ts.createIdentifier(
-                                        state.options.functionFieldPromotion.paramName
-                                        )
-                                    : ts.createIdentifier(
-                                        `args.${field.name.value}`,
-                                        )
-                                )
+                                : state.options.functionFieldPromotion
+                                      .isEnabled &&
+                                  (field.fieldType as Identifier).value ===
+                                      state.options.functionFieldPromotion
+                                          .typeName
+                                ? ts.createIdentifier(
+                                      state.options.functionFieldPromotion
+                                          .paramName,
+                                  )
+                                : ts.createIdentifier(
+                                      `args.${field.name.value}`,
+                                  )
                         return ts.createPropertyAssignment(
                             ts.createIdentifier(field.name.value),
                             defaultValue,
@@ -57,21 +60,27 @@ export function renderFunction(
     statement: InterfaceWithFields,
     state: IRenderState,
 ): ts.FunctionDeclaration {
-    var paramSet = createArgsParameterForStruct(statement);
+    const paramSet = createArgsParameterForStruct(statement)
     if (state.options.functionFieldPromotion.isEnabled) {
-        var promoteField = statement.fields.find((field) => {
-            return (field.fieldType as Identifier).value == state.options.functionFieldPromotion.typeName;
+        const promoteField = statement.fields.find((field) => {
+            return (
+                (field.fieldType as Identifier).value ===
+                state.options.functionFieldPromotion.typeName
+            )
         })
 
         if (promoteField) {
             paramSet.push(
                 createFunctionParameter(
                     state.options.functionFieldPromotion.paramName, // param name
-                    ts.createTypeReferenceNode(state.options.functionFieldPromotion.qualifiedTypeName, undefined), // param type
+                    ts.createTypeReferenceNode(
+                        state.options.functionFieldPromotion.qualifiedTypeName,
+                        undefined,
+                    ), // param type
                     undefined, // initializer
-                    false // optional?
-                )
-            );
+                    false, // optional?
+                ),
+            )
         }
     }
     return ts.createFunctionDeclaration(

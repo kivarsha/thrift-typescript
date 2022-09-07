@@ -22,7 +22,7 @@
         "build:test:only": "tsc -p tsconfig.test.json",
         "build:watch": "tsc --watch",
         "lint": "tslint --fix 'src/**/*.ts'",
-        "format": "prettier --write 'src/**/*.ts'",
+        "format": "prettier --write \"src/**/*.ts\"",
         "move:fixtures": "rimraf dist/tests/unit/fixtures && cp -r src/tests/unit/fixtures dist/tests/unit/fixtures",
         "pretest": "npm run build:test && npm run move:fixtures",
         "test": "npm run test:unit && npm run test:integration",
