@@ -15,7 +15,7 @@ import { renderIntConstant } from './values'
  * }
  *
  * // typescript
- * export enum MyEnum {
+ * export const enum MyEnum {
  *   ONE,
  *   TWO
  * }
@@ -26,7 +26,10 @@ export function renderEnum(
 ): ts.Statement {
     return ts.createEnumDeclaration(
         undefined, // decorators
-        [ts.createToken(ts.SyntaxKind.ExportKeyword)], // modifiers
+        [
+            ts.createToken(ts.SyntaxKind.ExportKeyword),
+            ts.createToken(ts.SyntaxKind.ConstKeyword),
+        ], // modifiers
         node.name.value, // enum name
         node.members.map((field: EnumMember) => {
             return ts.createEnumMember(
